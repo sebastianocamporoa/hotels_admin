@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Hotel;
 
 use App\Http\Controllers\Controller;
 use App\Models\Hotel;
+use App\Models\HotelRoom;
 use Illuminate\Http\Request;
 
 class HotelController extends Controller
@@ -38,6 +39,16 @@ class HotelController extends Controller
 
             // Save the new hotel in the database
             $hotel->save();
+
+            $hotelId = $hotel->id;
+            foreach ($request->input('rooms') as $room) {
+                $hotelRoom = new HotelRoom();
+                $hotelRoom->hotel_id = $hotelId;
+                $hotelRoom->room_type_id = $room['roomType'];
+                $hotelRoom->accommodation_id = $room['accommodation'];
+                $hotelRoom->quantity = $room['numRooms'];
+                $hotelRoom->save();
+            }
 
             return response()->json([
                 'success' => true,
