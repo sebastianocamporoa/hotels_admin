@@ -145,6 +145,9 @@ class HotelController extends Controller
                 ], 404);
             }
 
+            // Delete the hotel rooms associated with the hotel
+            $hotel->rooms()->delete();
+
             // Delete the hotel from the database
             $hotel->delete();
 
