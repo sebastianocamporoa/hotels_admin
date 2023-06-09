@@ -30,6 +30,16 @@ class HotelController extends Controller
         ]);
 
         try {
+
+            // Find a hotel with the same 'nit'
+            $existingHotel = Hotel::where('nit', $request->input('nit'))->first();
+
+            if ($existingHotel) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Ya existe un hotel registrado con el mismo nit',
+                ], 400);
+            }
             // Create a new instance of the Hotel model
             $hotel = new Hotel();
             $hotel->name = $request->input('name');
